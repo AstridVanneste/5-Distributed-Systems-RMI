@@ -21,7 +21,9 @@ public class Client
 		{
 			Registry registry = LocateRegistry.getRegistry(args[0]);
 			ComponentInterface component = (ComponentInterface) registry.lookup(Server.SERVER_NAME);
-			component.getComponent(ComponentKeys.BANK_KEY);
+			BankComponent bank = (BankComponent) component.getComponent(ComponentKeys.BANK_KEY);
+			System.out.println("Balance: " + bank.getBalance());
+
 		}
 		catch(RemoteException re)
 		{
