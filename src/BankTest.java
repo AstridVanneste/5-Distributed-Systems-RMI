@@ -13,5 +13,20 @@ public class BankTest
 		account2.withdraw(500);
 
 		System.out.println("Account1: " + Integer.toString(account1.getBalance()) + "\nAccount2: " + Integer.toString(account2.getBalance()));
+
+		account1.withdraw(500);
+		account2.withdraw(500);
+
+		System.out.println("Account1: " + Integer.toString(account1.getBalance()) + "\nAccount2: " + Integer.toString(account2.getBalance()));
+
+		account1.deposit(500);
+		account2.deposit(500);
+
+		System.out.println("Account1: " + Integer.toString(account1.getBalance()) + "\nAccount2: " + Integer.toString(account2.getBalance()));
+
+		account1.deposit(Integer.MAX_VALUE);
+		account2.deposit(Integer.MAX_VALUE);
+
+		System.out.println("Account1: " + Integer.toString(account1.getBalance()) + "\nAccount2: " + Integer.toString(account2.getBalance()));
 	}
 }
