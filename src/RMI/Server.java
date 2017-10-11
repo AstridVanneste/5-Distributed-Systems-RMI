@@ -13,6 +13,7 @@ import java.util.Set;
  */
 public class Server implements ComponentInterface
 {
+	public static final String SERVER_NAME = "Server";
 	private HashMap<String,GenericComponent> components;
 
 	public Server()
@@ -40,11 +41,10 @@ public class Server implements ComponentInterface
 		}
 		try
 		{
-			String name = "Server";
 			ComponentInterface server = new Server();
 			ComponentInterface stub = (ComponentInterface) UnicastRemoteObject.exportObject(server,0);
 			Registry registry = LocateRegistry.getRegistry();
-			registry.rebind(name,stub);
+			registry.rebind(Server.SERVER_NAME,stub);
 			System.out.println("Server bound");
 		}
 		catch(RemoteException re)
