@@ -14,7 +14,7 @@ import java.util.Set;
 public class Server implements ComponentInterface
 {
 	public static final String SERVER_NAME = "Server";
-	private HashMap<String,GenericComponent> components;
+	private static HashMap<String,GenericComponent> components;
 
 	public Server()
 	{
@@ -31,6 +31,11 @@ public class Server implements ComponentInterface
 	public Set<String> getComponentKeys() throws RemoteException
 	{
 		return components.keySet();
+	}
+
+	public void addComponent(String key, GenericComponent component)
+	{
+		components.put(key, component);
 	}
 
 	public static void main(String[] args)
