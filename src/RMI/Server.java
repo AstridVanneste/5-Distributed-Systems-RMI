@@ -6,6 +6,8 @@ import java.rmi.registry.Registry;
 import java.rmi.server.*;
 import java.util.HashMap;
 import java.util.Set;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Astrid on 11-Oct-17.
@@ -13,11 +15,11 @@ import java.util.Set;
 public class Server implements ComponentInterface
 {
 	public static final String SERVER_NAME = "Server";
-	private static HashMap<String,GenericComponent> components;
+	private HashMap<String,GenericComponent> components;
 
 	public Server()
 	{
-		components = new HashMap<>();
+		this.components = new HashMap<>();
 	}
 
 	public void init ()
@@ -30,7 +32,7 @@ public class Server implements ComponentInterface
 		{
 			ComponentInterface server = new Server();
 			ComponentInterface stub = (ComponentInterface) UnicastRemoteObject.exportObject(server,0);
-			Registry registry = LocateRegistry.getRegistry();
+			Registry registry = LocateRegistry.createRegistry(1099);
 			registry.rebind(Server.SERVER_NAME, stub);
 			System.out.println("Server bound");
 		}
