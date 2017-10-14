@@ -1,7 +1,11 @@
 package RMI;
 
-public class GenericComponent
+import java.io.Serializable;
+
+public class GenericComponent implements Serializable
 {
+	private static final long serialVersionUID = 0; // First version, required for serialization
+
 	private String type;
 
 	public GenericComponent ()

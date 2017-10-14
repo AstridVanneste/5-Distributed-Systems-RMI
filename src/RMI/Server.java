@@ -1,6 +1,5 @@
 package RMI;
 
-import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -21,6 +20,27 @@ public class Server implements ComponentInterface
 		components = new HashMap<>();
 	}
 
+	public void init ()
+	{
+		if(System.getSecurityManager()==null)
+		{
+			System.setSecurityManager(new SecurityManager());
+		}
+		try
+		{
+			ComponentInterface server = new Server();
+			ComponentInterface stub = (ComponentInterface) UnicastRemoteObject.exportObject(server,0);
+			Registry registry = LocateRegistry.getRegistry();
+			registry.rebind(Server.SERVER_NAME, stub);
+			System.out.println("Server bound");
+		}
+		catch(RemoteException re)
+		{
+			System.err.println("Exception when creating stub");
+			re.printStackTrace();
+		}
+	}
+
 	@Override
 	public GenericComponent getComponent(String key) throws RemoteException
 	{
@@ -36,26 +56,5 @@ public class Server implements ComponentInterface
 	public void addComponent(String key, GenericComponent component)
 	{
 		components.put(key, component);
-	}
-
-	public static void main(String[] args)
-	{
-		if(System.getSecurityManager()==null)
-		{
-			System.setSecurityManager(new SecurityManager());
-		}
-		try
-		{
-			ComponentInterface server = new Server();
-			ComponentInterface stub = (ComponentInterface) UnicastRemoteObject.exportObject(server,0);
-			Registry registry = LocateRegistry.getRegistry();
-			registry.rebind(Server.SERVER_NAME,stub);
-			System.out.println("Server bound");
-		}
-		catch(RemoteException re)
-		{
-			System.err.println("Exception when creating stub");
-			re.printStackTrace();
-		}
 	}
 }
