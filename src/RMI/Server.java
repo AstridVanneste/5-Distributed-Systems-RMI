@@ -4,20 +4,19 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.*;
-import java.util.HashMap;
-import java.util.Set;
-
 /**
  * Created by Astrid on 11-Oct-17.
  */
 public class Server implements ServerInterface
 {
+	private static final int THRESHOLD = -200;
 	public static final String SERVER_NAME = "Server";
-	private HashMap<String,GenericComponent> components;
+
+	private int balance;
 
 	public Server()
 	{
-		this.components = new HashMap<>();
+		this.balance = 0;
 	}
 
 	public void init ()
@@ -26,13 +25,12 @@ public class Server implements ServerInterface
 		{
 			System.setSecurityManager(new SecurityManager());
 		}
+
 		try
 		{
-			ServerInterface server = new Server();
-			ServerInterface stub = (ServerInterface) UnicastRemoteObject.exportObject(server,0);
+			ServerInterface stub = (ServerInterface) UnicastRemoteObject.exportObject(this,0);
 			Registry registry = LocateRegistry.createRegistry(1099);
 			registry.rebind(Server.SERVER_NAME, stub);
-			System.out.println("Server bound");
 		}
 		catch(RemoteException re)
 		{
@@ -42,34 +40,34 @@ public class Server implements ServerInterface
 	}
 
 	@Override
-	public GenericComponent getComponent(String key) throws RemoteException
+	public int getBalance()
 	{
-		System.out.println("Component being accessed");
-		if(components.containsKey(key))
+		return this.balance;
+	}
+
+	@Override
+	public void deposit(int amount)
+	{
+		if ((this.balance + amount) < this.balance)
 		{
-			return components.get(key);
+			this.balance = Integer.MAX_VALUE;
 		}
 		else
 		{
-			throw new RuntimeException("No Component with that key");
+			this.balance += amount;
 		}
 	}
 
 	@Override
-	public Set<String> getComponentKeys() throws RemoteException
+	public void withdraw(int amount)
 	{
-		return components.keySet();
-	}
-
-	@Override
-	public int getNumberComponents() throws RemoteException
-	{
-		return components.size();
-	}
-
-	public void addComponent(String key, GenericComponent component)
-	{
-		components.put(key, component);
-
+		if ((this.balance - amount) > THRESHOLD)
+		{
+			this.balance -= amount;
+		}
+		else
+		{
+			this.balance = THRESHOLD;
+		}
 	}
 }
