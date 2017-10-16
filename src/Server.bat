@@ -7,7 +7,7 @@ set OUTPUT_DIRECTORY=C:\Users\Astrid\Dropbox\A_Universiteit\Semester_5\Gedistrib
 
 ::  CODEBASE
 ::  The directory where all source code is stored. (If we ever decide to separate client and server codebases, we need to review this!)
-set CODEBASE=C:\Users\Astrid\Dropbox\A_Universiteit\Semester_5\Gedistribueerde_systemen\Practicum\RMI\RMI\src\
+::  set CODEBASE=C:\Users\Astrid\Dropbox\A_Universiteit\Semester_5\Gedistribueerde_systemen\Practicum\RMI\RMI\src\
 
 ::  POLICY_FILE
 ::  The full path to the policy file to be used by the application
@@ -22,8 +22,10 @@ set currentDir=%cd%
 cd %OUTPUT_DIRECTORY%
 
 java -cp %OUTPUT_DIRECTORY% ^
--Djava.rmi.server.codebase=file:\\%CODEBASE% ^
 -Djava.security.policy=%POLICY_FILE% ^
 RMI.ServerMain
 
 cd %currentDir%
+
+rem  -Djava.rmi.server.codebase=file:\\%CODEBASE% ^
+
