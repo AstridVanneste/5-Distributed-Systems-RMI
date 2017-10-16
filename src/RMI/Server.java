@@ -6,13 +6,11 @@ import java.rmi.registry.Registry;
 import java.rmi.server.*;
 import java.util.HashMap;
 import java.util.Set;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Astrid on 11-Oct-17.
  */
-public class Server implements ComponentInterface
+public class Server implements ServerInterface
 {
 	public static final String SERVER_NAME = "Server";
 	private HashMap<String,GenericComponent> components;
@@ -30,8 +28,8 @@ public class Server implements ComponentInterface
 		}
 		try
 		{
-			ComponentInterface server = new Server();
-			ComponentInterface stub = (ComponentInterface) UnicastRemoteObject.exportObject(server,0);
+			ServerInterface server = new Server();
+			ServerInterface stub = (ServerInterface) UnicastRemoteObject.exportObject(server,0);
 			Registry registry = LocateRegistry.createRegistry(1099);
 			registry.rebind(Server.SERVER_NAME, stub);
 			System.out.println("Server bound");
@@ -46,7 +44,15 @@ public class Server implements ComponentInterface
 	@Override
 	public GenericComponent getComponent(String key) throws RemoteException
 	{
-		return components.get(key);
+		System.out.println("Component being accessed");
+		if(components.containsKey(key))
+		{
+			return components.get(key);
+		}
+		else
+		{
+			throw new RuntimeException("No Component with that key");
+		}
 	}
 
 	@Override
@@ -55,8 +61,15 @@ public class Server implements ComponentInterface
 		return components.keySet();
 	}
 
+	@Override
+	public int getNumberComponents() throws RemoteException
+	{
+		return components.size();
+	}
+
 	public void addComponent(String key, GenericComponent component)
 	{
 		components.put(key, component);
+
 	}
 }
