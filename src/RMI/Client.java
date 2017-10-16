@@ -4,7 +4,6 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
-import java.util.Set;
 
 /**
  * Created by Astrid on 11-Oct-17.
@@ -21,8 +20,12 @@ public class Client
 		try
 		{
 			Registry registry = LocateRegistry.getRegistry("127.0.0.1");
-			ComponentInterface component = (ComponentInterface) registry.lookup(Server.SERVER_NAME);
-			BankComponent bank = (BankComponent) component.getComponent(ComponentKeys.BANK_KEY);
+			ServerInterface server = (ServerInterface) registry.lookup(Server.SERVER_NAME);
+			System.out.println("Number of components in server " + server.getNumberComponents());
+
+			BankComponent bank = (BankComponent) server.getComponent(ComponentKeys.BANK_KEY);
+
+
 			System.out.println("Balance: " + bank.getBalance());
 
 		}

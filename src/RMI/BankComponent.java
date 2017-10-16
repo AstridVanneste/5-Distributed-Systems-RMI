@@ -66,4 +66,19 @@ public class BankComponent extends GenericComponent
 			this.balance = THRESHOLD;
 		}
 	}
+
+	@Override
+	public boolean equals(Object object)
+	{
+		BankComponent component = (BankComponent) object;
+
+		if(component.getBalance() == this.balance)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
 }
