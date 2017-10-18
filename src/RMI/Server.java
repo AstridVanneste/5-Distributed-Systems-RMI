@@ -48,26 +48,32 @@ public class Server implements ServerInterface
 	@Override
 	public void deposit(int amount)
 	{
-		if ((this.balance + amount) < this.balance)
+		synchronized ((Integer) amount)
 		{
-			this.balance = Integer.MAX_VALUE;
-		}
-		else
-		{
-			this.balance += amount;
+			if ((this.balance + amount) < this.balance)
+			{
+				this.balance = Integer.MAX_VALUE;
+			}
+			else
+			{
+				this.balance += amount;
+			}
 		}
 	}
 
 	@Override
 	public void withdraw(int amount)
 	{
-		if ((this.balance - amount) > THRESHOLD)
+		synchronized ((Integer) amount)
 		{
-			this.balance -= amount;
-		}
-		else
-		{
-			this.balance = THRESHOLD;
+			if ((this.balance - amount) > THRESHOLD)
+			{
+				this.balance -= amount;
+			}
+			else
+			{
+				this.balance = THRESHOLD;
+			}
 		}
 	}
 }
