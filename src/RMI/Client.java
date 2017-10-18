@@ -22,19 +22,19 @@ public class Client
 			Registry registry1 = LocateRegistry.getRegistry("127.0.0.1");
 			ServerInterface server1 = (ServerInterface) registry1.lookup(Server.SERVER_NAME);
 
-			System.out.println("Balance: € " + Integer.toString(server1.getBalance()));
-			System.out.println("Depositing €200");
+			System.out.println("Balance:  " + Integer.toString(server1.getBalance()));
+			System.out.println("Depositing 200");
 			server1.deposit(200);
-			System.out.println("Balance: € " + Integer.toString(server1.getBalance()));
-			System.out.println("Withdrawing €50");
+			System.out.println("Balance:  " + Integer.toString(server1.getBalance()));
+			System.out.println("Withdrawing 50");
 			server1.withdraw(50);
-			System.out.println("Balance: € " + Integer.toString(server1.getBalance()));
+			System.out.println("Balance:  " + Integer.toString(server1.getBalance()));
 
 			Registry registry2 = LocateRegistry.getRegistry("127.0.0.1");
 			ServerInterface server2 = (ServerInterface) registry1.lookup(Server.SERVER_NAME);
 
 			System.out.println("Refreshed Server...");
-			System.out.println("Balance: € " + Integer.toString(server1.getBalance()));
+			System.out.println("Balance:  " + Integer.toString(server1.getBalance()));
 		}
 		catch(RemoteException re)
 		{
